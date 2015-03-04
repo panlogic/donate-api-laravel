@@ -1,0 +1,30 @@
+{
+    "name": "panlogic/donate",
+    "description": "DONATE PHP library helper",
+    "keywords": ["donate", "api"],
+    "homepage": "http://github.com/panlogic/donate-api-laravel",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Panlogic Ltd",
+            "email": "alerts@panlogic.co.uk",
+            "role": "Owner"
+        },
+        {
+            "name": "David Wright",
+            "email": "david.wright@panlogic.co.uk",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.*|5.0.*",
+        "guzzlehttp/guzzle": "5.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Panlogic\\DONATE": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
