@@ -71,7 +71,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $base = "https://api.nationalfundingscheme.org/v1/";
+	private $base = "http://api.donate-platform.com/";
 
 	/**
 	 * The end point part of the URL for the request
