@@ -1,5 +1,5 @@
 {
-    "name": "panlogic/donate",
+    "name": "panlogic/donate-api-laravel",
     "description": "DONATE PHP library helper",
     "keywords": ["donate", "api"],
     "homepage": "http://github.com/panlogic/donate-api-laravel",
