@@ -112,7 +112,7 @@ class Donate {
 		$requestOptions = [];
 		foreach($this->requestOptions['body'] as $key=>$value)
 		{
-			$requestOptions[strtoupper($key)] = $value;
+			$requestOptions[$key] = $value;
 		}
 		$this->requestOptions['body'] = $requestOptions;
 		try
@@ -172,6 +172,80 @@ class Donate {
 		}
 		$result->body = $body;
 		return $result;
+	}
+
+	/**
+	 * Get received SMS messages
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllSMS($params = array())
+	{
+		$this->endpoint = 'sms';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get received SMS messages
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllMOSMS($params = array())
+	{
+		$this->endpoint = 'mosms';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get received SMS messages
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllMOSMSFiltered($params = array())
+	{
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'mosms/filter';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Send an SMS message
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function sendSMS($params = array())
+	{
+		$this->endpoint = 'sms/fonix/smsSend';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Send a charged SMS message
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function sendChargedSMS($params = array())
+	{
+		$this->endpoint = 'sms/fonix/smsCharge';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get causes filtered
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getCausesFiltered($params = array())
+	{
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'causes/filter';
+		return $this->response($this->call());
 	}
 
 	/**
