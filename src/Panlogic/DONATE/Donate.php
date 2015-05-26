@@ -16,6 +16,7 @@
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Stream\Stream;
 
 class Donate {
 
@@ -64,6 +65,7 @@ class Donate {
 		'body'				=> '',
 		'allow_redirects' 	=> false,
 		'timeout'			=> '5',
+		'exceptions'		=> true,
 	];
 
 	/**
@@ -71,7 +73,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $base = "http://api.donate-platform.com/";
+	private $base = "http://api.donate.local/";
 
 	/**
 	 * The end point part of the URL for the request
@@ -88,7 +90,7 @@ class Donate {
 	public function __construct($config = array())
 	{
 		$this->apikey = $config['platform'] == 'live' ? $config['live_apikey'] : $config['test_apikey'];
-		$this->requestOptions['headers'] = ['X-API-KEY' => $this->apikey];
+		$this->requestOptions['headers'] = ['X-API-KEY' => $this->apikey, 'Accept' => 'application/json', 'Content-Type' => 'application/json'];
 		$this->client = new Client();
 	}
 
@@ -110,9 +112,12 @@ class Donate {
 	private function call()
 	{
 		$requestOptions = [];
-		foreach($this->requestOptions['body'] as $key=>$value)
+		if(is_array($this->requestOptions['body']))
 		{
-			$requestOptions[$key] = $value;
+			foreach($this->requestOptions['body'] as $key=>$value)
+			{
+				$requestOptions[$key] = $value;
+			}
 		}
 		$this->requestOptions['body'] = $requestOptions;
 		try
@@ -120,32 +125,30 @@ class Donate {
 			switch(strtolower($this->method))
 			{
 				case "get":
-				try
-				{
-					$response = $this->getClient()->get($this->base . $this->endpoint, $this->requestOptions);
-				}
-				catch(RequestException $e)
-				{
-					return $e->getResponse();
-				}
+					try
+					{
+						$response = $this->getClient()->get($this->base . $this->endpoint, $this->requestOptions);
+					}
+					catch(RequestException $e)
+					{
+						return $e->getResponse();
+					}
 				break;
 
 				case "post":
-				try
-				{
-					$response = $this->getClient()->post($this->base . $this->endpoint, $this->requestOptions);
-				}
-				catch(RequestException $e)
-				{
-					return $e->getResponse();
-				}
+					$this->requestOptions['body'] = json_encode($this->requestOptions['body']);
+					try {
+						$response = $this->getClient()->post($this->base . $this->endpoint, $this->requestOptions);
+					} catch(Exception $e) {
+						$response = $e->getResponse();
+					}
 				break;
 			}
 			return $response;
 		}
-		catch(GuzzleHttp\Exception\BadResponseException $ex)
+		catch(RequestException $ex)
 		{
-			return $ex->getResponse()->getBody();
+			return $ex->getResponse();
 		}
 	}
 
@@ -157,18 +160,29 @@ class Donate {
 	private function response($response)
 	{
 		$result = new \stdClass();
+		$result->request = [
+			'url' => $this->base . $this->endpoint,
+			'method' => $this->method,
+			'options' => $this->requestOptions
+		];
 		$body = $response->getBody();
 		$result->statusCode = $response->getStatusCode();
 		$result->reason = $response->getReasonPhrase();
 		$result->json = '';
-		if ($this->responseFormat == 'json')
-		{
-			$result->json = $response->json();
-		}
 		$result->xml = '';
-		if ($this->responseFormat == 'xml')
+		$result->errors = '';
+		if($result->statusCode == 200)
 		{
-			$result->xml = $response->xml();
+			if ($this->responseFormat == 'json')
+			{
+				$result->json = $response->json();
+			}
+			if ($this->responseFormat == 'xml')
+			{
+				$result->xml = $response->xml();
+			}
+		} else {
+			$result->errors = json_decode($response->getBody()->getContents());
 		}
 		$result->body = $body;
 		return $result;
@@ -182,6 +196,7 @@ class Donate {
 	 */
 	public function getAllSMS($params = array())
 	{
+		$this->method = "POST";
 		$this->endpoint = 'sms';
 		return $this->response($this->call());
 	}
@@ -194,6 +209,7 @@ class Donate {
 	 */
 	public function getAllMOSMS($params = array())
 	{
+		$this->method = "POST";
 		$this->endpoint = 'mosms';
 		return $this->response($this->call());
 	}
@@ -206,6 +222,7 @@ class Donate {
 	 */
 	public function getAllMOSMSFiltered($params = array())
 	{
+		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = 'mosms/filter';
 		return $this->response($this->call());
@@ -219,6 +236,7 @@ class Donate {
 	 */
 	public function sendSMS($params = array())
 	{
+		$this->method = "POST";
 		$this->endpoint = 'sms/fonix/smsSend';
 		return $this->response($this->call());
 	}
@@ -231,6 +249,7 @@ class Donate {
 	 */
 	public function sendChargedSMS($params = array())
 	{
+		$this->method = "POST";
 		$this->endpoint = 'sms/fonix/smsCharge';
 		return $this->response($this->call());
 	}
@@ -243,8 +262,80 @@ class Donate {
 	 */
 	public function getCausesFiltered($params = array())
 	{
+		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = 'causes/filter';
+		return $this->response($this->call());
+	}
+
+	public function getOrganisationsFiltered($params = array())
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'organisations/filter';
+		return $this->response($this->call());
+	}
+
+	public function getGiftAidValue($param)
+	{
+		$this->method = "GET";
+		$this->endpoint = 'giftaid/value/' . $param;
+		return $this->response($this->call());
+	}
+
+	public function getDonorsFiltered($params = array())
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'donors/filter';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Add a transaction
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function addTransaction($params = array())
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'transactions';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Add a URL Aliases
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function addUrlAlias($params = array())
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'urlalias';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all URL Aliases
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllURLAlias($params = array())
+	{
+		$this->method = "POST";
+		$this->endpoint = 'urlalias';
+		return $this->response($this->call());
+	}
+
+	public function getLinkAliasShort($params = array())
+	{
+		$this->method = "POST";
+		$this->endpoint = 'urlalias/short';
 		return $this->response($this->call());
 	}
 
