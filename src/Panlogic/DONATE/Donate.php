@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.0
+* @version 1.0.1
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -73,7 +73,21 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $base = "http://api.donate.local/";
+	private $base = "";
+
+	/**
+	 * The dev base URL
+	 *
+	 * @var string
+	 */
+	private $dev_base = "http://dev.api.donate-platform.com/";
+
+	/**
+	 * The live base URL
+	 *
+	 * @var string
+	 */
+	private $live_base = "http://dev.api.donate-platform.com/";
 
 	/**
 	 * The end point part of the URL for the request
@@ -89,6 +103,7 @@ class Donate {
 	 */
 	public function __construct($config = array())
 	{
+		$this->base = $config['platform'] == 'live' ? $this->live_base : $this->dev_base;
 		$this->apikey = $config['platform'] == 'live' ? $config['live_apikey'] : $config['test_apikey'];
 		$this->requestOptions['headers'] = ['X-API-KEY' => $this->apikey, 'Accept' => 'application/json', 'Content-Type' => 'application/json'];
 		$this->client = new Client();
