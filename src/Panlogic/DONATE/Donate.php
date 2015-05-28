@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.1
+* @version 1.0.2
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.0";
+	private $version = "1.0.2";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -218,7 +218,7 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function getAllSMS($params = array())
+	public function getAllSMS(array $params = [])
 	{
 		$this->method = "POST";
 		$this->endpoint = 'sms';
@@ -231,24 +231,10 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function getAllMOSMS($params = array())
+	public function getAllMOSMS(array $params = [])
 	{
 		$this->method = "POST";
 		$this->endpoint = 'mosms';
-		return $this->response($this->call());
-	}
-
-	/**
-	 * Get received SMS messages
-	 *
-	 * @param  array  $body
-	 * @return Object
-	 */
-	public function getAllMOSMSFiltered($params = array())
-	{
-		$this->method = "POST";
-		$this->requestOptions['body'] = $params;
-		$this->endpoint = 'mosms/filter';
 		return $this->response($this->call());
 	}
 
@@ -258,11 +244,25 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function updateMo($params = array())
+	public function updateMo(array $params = [])
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = sprintf('mosms/%s/update',$params['sms_mo_id']);
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get received SMS messages
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllMOSMSFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'mosms/filter';
 		return $this->response($this->call());
 	}
 
@@ -272,10 +272,11 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function sendSMS($params = array())
+	public function sendSMS(array $params = [])
 	{
 		$this->method = "POST";
 		$this->endpoint = 'sms/fonix/smsSend';
+		$this->requestOptions['body'] = $params;
 		return $this->response($this->call());
 	}
 
@@ -285,10 +286,11 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function sendChargedSMS($params = array())
+	public function sendChargedSMS(array $params = [])
 	{
 		$this->method = "POST";
 		$this->endpoint = 'sms/fonix/smsCharge';
+		$this->requestOptions['body'] = $params;
 		return $this->response($this->call());
 	}
 
@@ -298,7 +300,7 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function getCausesFiltered($params = array())
+	public function getCausesFiltered(array $params = [])
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
@@ -306,7 +308,13 @@ class Donate {
 		return $this->response($this->call());
 	}
 
-	public function getOrganisationsFiltered($params = array())
+	/**
+	 * Get organisations filtered
+	 *
+	 * @param  array  $params
+	 * @return Object
+	 */
+	public function getOrganisationsFiltered(array $params = [])
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
@@ -314,6 +322,12 @@ class Donate {
 		return $this->response($this->call());
 	}
 
+	/**
+	 * Get Gift Aid value from amount
+	 *
+	 * @param  float  $param
+	 * @return Object
+	 */
 	public function getGiftAidValue($param)
 	{
 		$this->method = "GET";
@@ -321,7 +335,13 @@ class Donate {
 		return $this->response($this->call());
 	}
 
-	public function getDonorsFiltered($params = array())
+	/**
+	 * Get donors filtered
+	 *
+	 * @param  array  $params
+	 * @return Object
+	 */
+	public function getDonorsFiltered(array $params = [])
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
@@ -335,7 +355,7 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function addTransaction($params = array())
+	public function addTransaction(array $params = [])
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
@@ -349,7 +369,7 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function addUrlAlias($params = array())
+	public function addUrlAlias(array $params = [])
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
@@ -363,17 +383,35 @@ class Donate {
 	 * @param  array  $body
 	 * @return Object
 	 */
-	public function getAllURLAlias($params = array())
+	public function getAllURLAlias(array $params = [])
 	{
 		$this->method = "POST";
 		$this->endpoint = 'urlalias';
 		return $this->response($this->call());
 	}
 
-	public function getLinkAliasShort($params = array())
+	/**
+	 * Get a random short string for short link
+	 *
+	 * @return Object
+	 */
+	public function getLinkAliasShort(array $params = [])
 	{
 		$this->method = "POST";
 		$this->endpoint = 'urlalias/short';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get SMS Alias Links
+	 *
+	 * @return Object
+	 */
+	public function getSMSLinkFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'smsalias/filter';
 		return $this->response($this->call());
 	}
 
