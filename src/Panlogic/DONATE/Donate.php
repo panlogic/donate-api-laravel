@@ -127,6 +127,7 @@ class Donate {
 	private function call()
 	{
 		$requestOptions = [];
+		$response = [];
 		if(is_array($this->requestOptions['body']))
 		{
 			foreach($this->requestOptions['body'] as $key=>$value)
@@ -159,7 +160,11 @@ class Donate {
 					}
 				break;
 			}
-			return $response;
+			if (is_object($response))
+			{
+				return $response;
+			}
+			return false;
 		}
 		catch(RequestException $ex)
 		{
@@ -174,6 +179,10 @@ class Donate {
 	 */
 	private function response($response)
 	{
+		if(!$response)
+		{
+			return false;
+		}
 		$result = new \stdClass();
 		$result->request = [
 			'url' => $this->base . $this->endpoint,
@@ -240,6 +249,20 @@ class Donate {
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = 'mosms/filter';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Update received SMS message
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function updateMo($params = array())
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('mosms/%s/update',$params['sms_mo_id']);
 		return $this->response($this->call());
 	}
 
