@@ -415,6 +415,14 @@ class Donate {
 		return $this->response($this->call());
 	}
 
+	public function userContactInstitution(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('donors/%s/%s/contact',$params['user_id'],$params['institution_id']);
+		return $this->response($this->call());
+	}
+
 	/**
 	 * Get the class version
 	 *
