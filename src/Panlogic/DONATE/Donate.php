@@ -87,7 +87,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $live_base = "http://dev.api.donate-platform.com/";
+	private $live_base = "http://api.donate-platform.com/";
 
 	/**
 	 * The end point part of the URL for the request
