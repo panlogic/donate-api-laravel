@@ -136,17 +136,13 @@ class Donate {
 			}
 		}
 		$this->requestOptions['body'] = $requestOptions;
-		try
-		{
+		try {
 			switch(strtolower($this->method))
 			{
 				case "get":
-					try
-					{
+					try {
 						$response = $this->getClient()->get($this->base . $this->endpoint, $this->requestOptions);
-					}
-					catch(RequestException $e)
-					{
+					} catch(RequestException $e) {
 						return $e->getResponse();
 					}
 				break;
@@ -160,14 +156,12 @@ class Donate {
 					}
 				break;
 			}
-			if (is_object($response))
-			{
+			if (is_object($response)) {
 				return $response;
 			}
 			return false;
 		}
-		catch(RequestException $ex)
-		{
+		catch(RequestException $ex) {
 			return $ex->getResponse();
 		}
 	}
@@ -309,6 +303,28 @@ class Donate {
 	}
 
 	/**
+	 * Update cause
+	 *
+	 * @param  array  $params
+	 * @return Object
+	 */
+	public function updateCause(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('causes/%s/update',$params['cause_id']);
+		return $this->response($this->call());
+	}
+
+	public function getCauseDescription(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('/causes/%s/description',$params['cause_id']);
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Get organisations filtered
 	 *
 	 * @param  array  $params
@@ -420,6 +436,14 @@ class Donate {
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = sprintf('donors/%s/%s/contact',$params['user_id'],$params['institution_id']);
+		return $this->response($this->call());
+	}
+
+	public function userCanGiftAid(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('donors/%s/cangiftaid',$params['user_id']);
 		return $this->response($this->call());
 	}
 
