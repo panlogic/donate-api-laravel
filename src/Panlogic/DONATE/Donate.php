@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.2
+* @version 1.0.3
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.2";
+	private $version = "1.0.3";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -261,6 +261,20 @@ class Donate {
 	}
 
 	/**
+	 * Get received DR SMS messages
+	 *
+	 * @param  array  $params
+	 * @return Object
+	 */
+	public function getAllDRSMSFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'drsms/filter';
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Send an SMS message
 	 *
 	 * @param  array  $body
@@ -376,6 +390,34 @@ class Donate {
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = 'transactions';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Update a transaction
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function updateTransaction(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('transactions/%s/update',$params['transaction_id']);
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all transactions
+	 *
+	 * @param  array  $params
+	 * @return Object
+	 */
+	public function getTransactionsFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'transactions/filter';
 		return $this->response($this->call());
 	}
 
