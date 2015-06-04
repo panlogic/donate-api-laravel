@@ -207,6 +207,45 @@ class Donate {
 	}
 
 	/**
+	 * Check an number is a valid number
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function isValidNumber(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = sprintf('sms/isValidNumber/%s/%s',$params['number'],isset($params['country_code']) ? $params['country_code'] : 'GB');
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Check an number is a valid mobile number
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function isMobileNumber(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = sprintf('sms/isMobileNumber/%s/%s',$params['number'],isset($params['country_code']) ? $params['country_code'] : 'GB');
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Return a national formatted number
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getNationalNumber(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = sprintf('sms/nationalNumber/%s/%s',$params['number'],isset($params['country_code']) ? $params['country_code'] : 'GB');
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Get received SMS messages
 	 *
 	 * @param  array  $body
@@ -486,6 +525,19 @@ class Donate {
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = sprintf('donors/%s/cangiftaid',$params['user_id']);
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Send an email
+	 *
+	 * @return Object
+	 */
+	public function email(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'email';
 		return $this->response($this->call());
 	}
 
