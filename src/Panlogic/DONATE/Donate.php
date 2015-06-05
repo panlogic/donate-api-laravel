@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.3
+* @version 1.0.4
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.3";
+	private $version = "1.0.4";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -242,6 +242,19 @@ class Donate {
 	{
 		$this->method = "GET";
 		$this->endpoint = sprintf('sms/nationalNumber/%s/%s',$params['number'],isset($params['country_code']) ? $params['country_code'] : 'GB');
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Return a national formatted number
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function formatNumber(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = sprintf('sms/formatNumber/%s/%s/%s',$params['number'],$params['country'],isset($params['format']) ? $params['format'] : '');
 		return $this->response($this->call());
 	}
 
