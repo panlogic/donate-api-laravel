@@ -298,6 +298,20 @@ class Donate {
 	}
 
 	/**
+	 * Get countries filtered
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllCountriesFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'country/filter';
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Get received SMS messages
 	 *
 	 * @param  array  $body
