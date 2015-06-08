@@ -259,6 +259,45 @@ class Donate {
 	}
 
 	/**
+	 * Get all countries
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllAddresses(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = 'address';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all zones
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllZones(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = 'zone';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all countries
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllCountries(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = 'country';
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Get received SMS messages
 	 *
 	 * @param  array  $body
@@ -266,7 +305,7 @@ class Donate {
 	 */
 	public function getAllSMS(array $params = [])
 	{
-		$this->method = "POST";
+		$this->method = "GET";
 		$this->endpoint = 'sms';
 		return $this->response($this->call());
 	}
@@ -279,7 +318,7 @@ class Donate {
 	 */
 	public function getAllMOSMS(array $params = [])
 	{
-		$this->method = "POST";
+		$this->method = "GET";
 		$this->endpoint = 'mosms';
 		return $this->response($this->call());
 	}
