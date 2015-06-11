@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.4
+* @version 1.0.5
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.4";
+	private $version = "1.0.5";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -604,6 +604,19 @@ class Donate {
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
 		$this->endpoint = 'email';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get organisations / causes based on term
+	 *
+	 * @return Object
+	 */
+	public function search(array $params = [])
+	{
+		$this->method = "POST";
+		$this->endpoint = 'search';
+		$this->requestOptions['body'] = $params;
 		return $this->response($this->call());
 	}
 
