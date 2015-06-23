@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.5
+* @version 1.0.6
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.5";
+	private $version = "1.0.6";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -389,6 +389,20 @@ class Donate {
 	{
 		$this->method = "POST";
 		$this->endpoint = 'sms/fonix/smsSend';
+		$this->requestOptions['body'] = $params;
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Send a charged SMS message
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function sendChargedMobileSMS(array $params = [])
+	{
+		$this->method = "POST";
+		$this->endpoint = 'sms/fonix/smsChargeMobile';
 		$this->requestOptions['body'] = $params;
 		return $this->response($this->call());
 	}
