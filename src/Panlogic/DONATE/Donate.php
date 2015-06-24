@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.6
+* @version 1.0.7
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.6";
+	private $version = "1.0.7";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -321,6 +321,20 @@ class Donate {
 	{
 		$this->method = "GET";
 		$this->endpoint = 'sms';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get received SMS messages
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllSMSFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = 'sms/filter';
 		return $this->response($this->call());
 	}
 
