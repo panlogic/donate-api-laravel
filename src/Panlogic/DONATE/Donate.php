@@ -272,6 +272,60 @@ class Donate {
 	}
 
 	/**
+	 * Get all income
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllIncome(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = 'income';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all income filtered
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllIncomeFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->endpoint = 'income/filter';
+		$this->requestOptions['body'] = $params;
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all sector
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllSector(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = 'sector';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all income filtered
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllSectorFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->endpoint = 'sector/filter';
+		$this->requestOptions['body'] = $params;
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Get all zones
 	 *
 	 * @param  array  $body
