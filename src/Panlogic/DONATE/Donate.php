@@ -7,7 +7,7 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.7
+* @version 1.0.8
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
@@ -25,7 +25,7 @@ class Donate {
 	 *
 	 * @var string
 	 */
-	private $version = "1.0.7";
+	private $version = "1.0.8";
 
 	/**
 	 * A Guzzle HTTP Client object
@@ -259,7 +259,34 @@ class Donate {
 	}
 
 	/**
-	 * Get all countries
+	 * Get all images
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllImages(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = 'images';
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all images filtered
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllImagesFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->endpoint = 'images/filter';
+		$this->requestOptions['body'] = $params;
+		return $this->response($this->call());
+	}
+
+	/**
+	 * Get all addresses
 	 *
 	 * @param  array  $body
 	 * @return Object
