@@ -299,6 +299,19 @@ class Donate {
 	}
 
 	/**
+	 * Get all addresses
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getAllAddressesFiltered(array $params = [])
+	{
+		$this->method = "POST";
+		$this->endpoint = 'address/filter';
+		$this->requestOptions['body'] = $params;
+		return $this->response($this->call());
+	}
+	/**
 	 * Get all income
 	 *
 	 * @param  array  $body
