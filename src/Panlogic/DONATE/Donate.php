@@ -557,6 +557,20 @@ class Donate {
 		return $this->response($this->call());
 	}
 
+	/**
+	 * Create cause
+	 *
+	 * @param  array  $params
+	 * @return Object
+	 */
+	public function createCause(array $params = [])
+	{
+		$this->method = "POST";
+		$this->requestOptions['body'] = $params;
+		$this->endpoint = sprintf('causes');
+		return $this->response($this->call());
+	}
+
 	public function getCauseDescription(array $params = [])
 	{
 		$this->method = "POST";
