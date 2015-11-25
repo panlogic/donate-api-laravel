@@ -246,6 +246,19 @@ class Donate {
 	}
 
 	/**
+	 * Return postcode results
+	 *
+	 * @param  array  $body
+	 * @return Object
+	 */
+	public function getPostCodes(array $params = [])
+	{
+		$this->method = "GET";
+		$this->endpoint = sprintf('paf/%s',$params['postcode']);
+		return $this->response($this->call());
+	}
+
+	/**
 	 * Return a national formatted number
 	 *
 	 * @param  array  $body
