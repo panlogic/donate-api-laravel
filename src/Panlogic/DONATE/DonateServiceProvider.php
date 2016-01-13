@@ -38,7 +38,7 @@ class DonateServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->app->bindShared('donate', function ($app)
+		$this->app->singleton('donate', function ($app)
 		{
 			if (is_null(config('panlogic.donate.live_apikey')))
 			{
