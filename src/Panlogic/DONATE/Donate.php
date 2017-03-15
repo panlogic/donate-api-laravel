@@ -1,4 +1,5 @@
-<?php namespace Panlogic\DONATE;
+<?php
+
 /**
 * DONATE helper package by Panlogic Ltd.
 *
@@ -7,12 +8,14 @@
 * Licensed under the terms from Panlogic Ltd.
 *
 * @package DONATE
-* @version 1.0.8
+* @version 1.0.9
 * @author Panlogic Ltd
 * @license MIT
 * @copyright (c) 2015, Panlogic Ltd
 * @link http://www.panlogic.co.uk
 */
+
+namespace Panlogic\DONATE;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -76,6 +79,13 @@ class Donate {
 	private $base = "";
 
 	/**
+	 * The test base URL
+	 *
+	 * @var string
+	 */
+	private $test_base = "http://test.api.donate-platform.com/";
+
+	/**
 	 * The dev base URL
 	 *
 	 * @var string
@@ -104,6 +114,9 @@ class Donate {
 	public function __construct($config = array())
 	{
 		$this->base = $config['platform'] == 'live' ? $this->live_base : $this->dev_base;
+		if ($config['platform'] == 'test') {
+			$this->base = $this->test_base;
+		}
 		$this->apikey = $config['platform'] == 'live' ? $config['live_apikey'] : $config['test_apikey'];
 		$this->requestOptions['headers'] = ['X-API-KEY' => $this->apikey, 'Accept' => 'application/json', 'Content-Type' => 'application/json'];
 		$this->client = new Client();
