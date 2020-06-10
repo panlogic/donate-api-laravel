@@ -26,5 +26,12 @@
             "Panlogic\\DONATE": "src/"
         }
     },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Panlogic\\DONATE\\DonateServiceProvider"
+            ]
+        }
+    },
     "minimum-stability": "stable"
 }
