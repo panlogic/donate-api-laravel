@@ -18,12 +18,19 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "4.*|5.*",
+        "illuminate/support": "4.*|5.*|6.*|7.*",
         "guzzlehttp/guzzle": "5.*"
     },
     "autoload": {
         "psr-0": {
             "Panlogic\\DONATE": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Panlogic\\DONATE\\DonateServiceProvider"
+            ]
         }
     },
     "minimum-stability": "stable"
