@@ -601,7 +601,7 @@ class Donate {
 	{
 		$this->method = "POST";
 		$this->requestOptions['body'] = $params;
-		$this->endpoint = sprintf('/causes/%s/description',$params['cause_id']);
+		$this->endpoint = sprintf('causes/%s/description',$params['cause_id']);
 		return $this->response($this->call());
 	}
 
